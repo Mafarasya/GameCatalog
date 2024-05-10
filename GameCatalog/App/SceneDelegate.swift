@@ -13,10 +13,45 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        self.window = UIWindow(windowScene: windowScene)
+        self.window?.rootViewController = createTabbar()
+        self.window?.makeKeyAndVisible()
+        
+    }
+    
+    func createPopularGameNavigationController() -> UINavigationController {
+        let popularGameListVC = PopularGameListVC()
+        
+        popularGameListVC.title = "Popular Games"
+        
+        popularGameListVC.tabBarItem = UITabBarItem(title: "Game", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)
+        
+        let navigationController = UINavigationController(rootViewController: popularGameListVC)
+        
+        navigationController.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        
+        return navigationController
+    }
+    
+    func createMyProfileNavigationController() -> UINavigationController {
+        let myProfileVC = MyProfileVC()
+    
+        myProfileVC.tabBarItem = UITabBarItem(title: "About Me", image: UIImage(systemName: "person.crop.circle.fill"), tag: 1)
+        
+        return UINavigationController(rootViewController: myProfileVC)
+    }
+    
+    func createTabbar() -> UITabBarController {
+        let tabbar = UITabBarController()
+        
+        tabbar.tabBar.tintColor = .white
+        tabbar.viewControllers = [createPopularGameNavigationController(), createMyProfileNavigationController()]
+        
+        return tabbar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
