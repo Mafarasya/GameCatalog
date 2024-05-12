@@ -23,9 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func createPopularGameNavigationController() -> UINavigationController {
         let popularGameListVC = PopularGameListVC()
-        
-        popularGameListVC.title = "Popular Games"
-        
+                
         popularGameListVC.tabBarItem = UITabBarItem(title: "Game", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)
         
         let navigationController = UINavigationController(rootViewController: popularGameListVC)
@@ -49,6 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabbar = UITabBarController()
         
         tabbar.tabBar.tintColor = .white
+        tabbar.tabBar.backgroundColor = UIColor(named: "background")
         tabbar.viewControllers = [createPopularGameNavigationController(), createMyProfileNavigationController()]
         
         return tabbar

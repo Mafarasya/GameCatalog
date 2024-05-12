@@ -42,6 +42,7 @@ class MyProfileVC: UIViewController {
     lazy var myProfilePhoto: UIImageView = {
         let image = UIImageView()
         
+        image.contentMode = .scaleAspectFit
         image.image = UIImage(named: "myPhoto")
         
         return image
@@ -74,6 +75,7 @@ class MyProfileVC: UIViewController {
         myProfilePhoto.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            myProfilePhoto.topAnchor.constraint(equalTo: view.topAnchor),
             myProfilePhoto.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             myProfilePhoto.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
