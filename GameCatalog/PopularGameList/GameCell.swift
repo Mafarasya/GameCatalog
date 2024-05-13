@@ -61,6 +61,14 @@ class GameCell: UITableViewCell {
         return label
     }()
     
+    let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+       
+        indicator.color = .gray
+        
+        return indicator
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -72,6 +80,7 @@ class GameCell: UITableViewCell {
         addSubview(releaseLabel)
         addSubview(ratingLabel)
         addSubview(botSeparatorLine)
+        addSubview(loadingIndicator)
         // Configure the view for the selected state
         configureTopSeparatorLine()
         configureImageView()
@@ -79,6 +88,7 @@ class GameCell: UITableViewCell {
         configureReleaseLabel()
         configureRatingLabel()
         configureBotSeparatorLine()
+        configureLoadingIndicator()
 
     }
     
@@ -87,11 +97,11 @@ class GameCell: UITableViewCell {
     }
     
     func set(game: Game) {
-        print("Setting up cell for game: \(game.gameTitle)")
+//        print("Setting up cell for game: \(game.gameTitle)")
         gameImageView.image = game.image
-        gameTitleLabel.text = game.gameTitle
-        releaseLabel.text = game.releaseDate
-        ratingLabel.text = game.rating
+        gameTitleLabel.text = game.name
+        releaseLabel.text = game.released
+        ratingLabel.text = String(game.rating)
     }
 
     func configureTopSeparatorLine(){
@@ -140,7 +150,7 @@ class GameCell: UITableViewCell {
         NSLayoutConstraint.activate([
             gameTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 23),
             gameTitleLabel.leadingAnchor.constraint(equalTo: gameImageView.trailingAnchor, constant: 26),
-            gameTitleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 220)
+            gameTitleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 230)
         ])
     }
     
@@ -162,9 +172,20 @@ class GameCell: UITableViewCell {
         ])
     }
     
+    func configureLoadingIndicator() {
+        
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: gameImageView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: gameImageView.centerYAnchor)
+        ])
+        
+    }
+    
 }
 
-#Preview {
-    GameCell()
-}
-
+//#Preview {
+//    GameCell()
+//}
+//

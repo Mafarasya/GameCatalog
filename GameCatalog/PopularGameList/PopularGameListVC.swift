@@ -21,7 +21,7 @@ class PopularGameListVC: UIViewController {
         return label
     }()
     
-    var games: [Game] = []
+    private var games: [Game] = []
     
     struct Cells {
         static let gameCell = "GameCell"
@@ -33,10 +33,49 @@ class PopularGameListVC: UIViewController {
         view.tintColor = .white
         view.backgroundColor = UIColor(named: "background")
         
-        games = fetchData()
+        Task { await getGames() }
         
         configureTitleLabel()
         configureTableView()
+        
+    }
+    
+    func getGames() async {
+        let network: NetworkService = NetworkService()
+        
+        do {
+            games = try await network.getGames()
+            print(games.count)
+            print("Get games")
+            
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
+            }
+            
+        } catch {
+            fatalError("Error: Connection Failed")
+        }
+    
+    }
+    
+    fileprivate func startDownload(game: Game, indexPath: IndexPath) {
+        let downloader: ImageDownloader = ImageDownloader()
+        
+        if game.state == .new {
+            Task {
+                do {
+                    let image = try await downloader.downloadImage(url: game.backgroundImage)
+                    game.state = .downloaded
+                    game.image = image
+                    DispatchQueue.main.async {
+                        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                } catch {
+                    game.state = .failed
+                    game.image = nil
+                }
+            }
+        }
         
     }
     
@@ -79,6 +118,7 @@ class PopularGameListVC: UIViewController {
 // MARK: UITableViewDelegate & UITableViewDataSource
 extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(games.count)
         return games.count
     }
     
@@ -88,24 +128,34 @@ extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.set(game: game)
         
+        // validate ketika gambar belum diunduh pengguna -> show indicator & start to download
+        if game.state == .new {
+            cell.loadingIndicator.isHidden = false
+            cell.loadingIndicator.startAnimating()
+            startDownload(game: game, indexPath: indexPath)
+        } else {
+            cell.loadingIndicator.stopAnimating()
+            cell.loadingIndicator.isHidden = true
+        }
+        
         return cell
     }
 }
 
-// TEST DUMMY DATA
-extension PopularGameListVC {
-    
-    func fetchData() -> [Game] {
-        let game1 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "GTA San Andreas", releaseDate: "1992", rating: "4.5")
-        let game2 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Legend of Zelda: Breath of the Wild", releaseDate: "2017", rating: "4.9")
-        let game3 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Red Dead Redemption 2", releaseDate: "2018", rating: "4.8")
-        let game4 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Witcher 3: Wild Hunt", releaseDate: "2015", rating: "4.9")
-        let game5 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Minecraft", releaseDate: "2011", rating: "4.7")
-        
-        return [game1, game2, game3, game4, game5]
-    }
-    
-}
+//// TEST DUMMY DATA
+//extension PopularGameListVC {
+//    
+//    func fetchData() -> [Game] {
+//        let game1 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "GTA San Andreas", releaseDate: "1992", rating: "4.5")
+//        let game2 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Legend of Zelda: Breath of the Wild", releaseDate: "2017", rating: "4.9")
+//        let game3 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Red Dead Redemption 2", releaseDate: "2018", rating: "4.8")
+//        let game4 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Witcher 3: Wild Hunt", releaseDate: "2015", rating: "4.9")
+//        let game5 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Minecraft", releaseDate: "2011", rating: "4.7")
+//        
+//        return [game1, game2, game3, game4, game5]
+//    }
+//    
+//}
 
 
 #Preview {
