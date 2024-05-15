@@ -10,6 +10,10 @@ import SwiftUI
 
 class DetailPopularGameVC: UIViewController {
     
+    var gameFetch: GameDetail? = nil
+    var game: Game? = nil
+    var gameId: Int!
+    
     private let imageShadow: UIView = {
         let shadow = InnerShadowView()
         
@@ -52,7 +56,6 @@ class DetailPopularGameVC: UIViewController {
        var label = UILabel()
         
         label.textColor = UIColor(named: "textColor")
-        label.text = "(1958)"
         label.font = UIFont.systemFont(ofSize: 24)
         
         return label
@@ -62,7 +65,6 @@ class DetailPopularGameVC: UIViewController {
         var label = UILabel()
         
         label.textColor = UIColor(named: "textColor")
-        label.text = "Action, Shooting"
         label.font = UIFont.systemFont(ofSize: 18)
         
         return label
@@ -85,11 +87,13 @@ class DetailPopularGameVC: UIViewController {
     }()
     
     let ratingStarsView = StarsRatingView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "background")
+            
+        print(gameFetch?.name)
         
         configureBackgroundImage()
         view.addSubview(imageShadow)
@@ -100,6 +104,28 @@ class DetailPopularGameVC: UIViewController {
         configureScreenshotsLabel()
         configureGameDescription()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Task { await getDetailGames()}
+    }
+    
+    func set(game: GameDetail) {
+        gameTitleLabel.text = game.name
+        gameDescriptionLabel.text = game.description
+        ratingStarsView.rating = Float(game.rating)
+    }
+    
+    func getDetailGames() async {
+        let network = NetworkService()
+        
+        do {
+            gameFetch = try await network.getGameDetails(gameId: gameId)
+        } catch {
+            fatalError("Error: connection failed.")
+        }
     }
     
     func configureBackgroundImage() {

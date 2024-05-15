@@ -140,6 +140,16 @@ extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedGame = games[indexPath.row]
+        let gameDetailVC: DetailPopularGameVC = DetailPopularGameVC()
+        
+        gameDetailVC.gameId = selectedGame.id
+        
+        navigationController?.pushViewController(gameDetailVC, animated: true)
+        
+    }
 }
 
 //// TEST DUMMY DATA

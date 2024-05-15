@@ -56,6 +56,7 @@ class MyProfileVC: UIViewController {
         
         return label
     }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +69,7 @@ class MyProfileVC: UIViewController {
         configureJobLabel()
         configureQuotesLabel()
     }
+    
     
     func configureMyProfilePhoto() {
         view.addSubview(myProfilePhoto)

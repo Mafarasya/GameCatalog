@@ -23,6 +23,7 @@
 		F9773E3B2BF394390076E3C2 /* DetailPopularGameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3A2BF394390076E3C2 /* DetailPopularGameVC.swift */; };
 		F9773E3D2BF39C840076E3C2 /* StarsRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3C2BF39C840076E3C2 /* StarsRatingView.swift */; };
 		F9773E402BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3F2BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift */; };
+		F9EC9D132BF4EBA500415BE6 /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EC9D122BF4EBA500415BE6 /* GameDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		F9773E3A2BF394390076E3C2 /* DetailPopularGameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPopularGameVC.swift; sourceTree = "<group>"; };
 		F9773E3C2BF39C840076E3C2 /* StarsRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarsRatingView.swift; sourceTree = "<group>"; };
 		F9773E3F2BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerShadowBackgroundImage.swift; sourceTree = "<group>"; };
+		F9EC9D122BF4EBA500415BE6 /* GameDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				F91AF50A2BEFC48D00986F39 /* Game.swift */,
+				F9EC9D122BF4EBA500415BE6 /* GameDetail.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				F91AF50B2BEFC48D00986F39 /* Game.swift in Sources */,
 				F9773E402BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift in Sources */,
 				F91AF5102BF241AF00986F39 /* ImageDownloader.swift in Sources */,
+				F9EC9D132BF4EBA500415BE6 /* GameDetail.swift in Sources */,
 				F9773E3B2BF394390076E3C2 /* DetailPopularGameVC.swift in Sources */,
 				F91AF4D22BEE7C4200986F39 /* AppDelegate.swift in Sources */,
 				F9773E3D2BF39C840076E3C2 /* StarsRatingView.swift in Sources */,

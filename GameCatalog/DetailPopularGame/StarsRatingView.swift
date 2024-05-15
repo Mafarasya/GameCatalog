@@ -10,7 +10,7 @@ import UIKit
 
 class StarsRatingView: UIStackView {
     
-    var rating: Double = 0 {
+    var rating: Float = 0 {
         didSet {
             updateStars()
         }
