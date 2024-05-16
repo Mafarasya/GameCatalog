@@ -29,7 +29,7 @@ class DetailPopularGameVC: UIViewController {
         
         label.textColor = UIColor(named: "textColor")
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        label.text = "Grand Theft Auto: San Andreas"
+//        label.text = "Grand Theft Auto: San Andreas"
         
         return label
     }()
@@ -46,9 +46,7 @@ class DetailPopularGameVC: UIViewController {
     
     private let backgroundImage: UIImageView = {
         var iv = UIImageView()
-        
-        iv.image = UIImage(named: "myPhoto")
-        
+
         return iv
     }()
     
@@ -76,11 +74,19 @@ class DetailPopularGameVC: UIViewController {
         return iv
     }()
     
+    let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+       
+        indicator.color = .gray
+        
+        return indicator
+    }()
+    
     private let gameDescriptionLabel: UILabel = {
         let label = UILabel()
         
         label.textColor = UIColor(named: "textColor")
-        label.text =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum placerat massa nec pretium. In elementum arcu lectus. Donec eu lacus quam. Phasellus imperdiet tortor non orci tempor, sit amet varius mauris sagittis. Curabitur faucibus, massa eu venenatis fringilla, diam massa fermentum magna, vitae condimentum lectus orci eu turpis. Aliquam tempor enim non elit rhoncus malesuada. Pellentesque posuere semper eros"
+//        label.text =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum placerat massa nec pretium. In elementum arcu lectus. Donec eu lacus quam. Phasellus imperdiet tortor non orci tempor, sit amet varius mauris sagittis. Curabitur faucibus, massa eu venenatis fringilla, diam massa fermentum magna, vitae condimentum lectus orci eu turpis. Aliquam tempor enim non elit rhoncus malesuada. Pellentesque posuere semper eros"
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
@@ -92,9 +98,7 @@ class DetailPopularGameVC: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "background")
-            
-        print(gameFetch?.name)
-        
+                
         configureBackgroundImage()
         view.addSubview(imageShadow)
         configureGameTitle()
@@ -118,13 +122,43 @@ class DetailPopularGameVC: UIViewController {
         ratingStarsView.rating = Float(game.rating)
     }
     
+    fileprivate func startDownload(gameDetail: GameDetail) {
+        let downloader: ImageDownloader = ImageDownloader()
+        
+        Task {
+            do {
+                let image = try await downloader.downloadImage(url: gameDetail.backgroundImage)
+                
+                gameDetail.image = image
+                DispatchQueue.main.async {
+                    self.backgroundImage.image = gameDetail.image
+                }
+                
+            } catch {
+                gameDetail.image = nil
+            }
+        }
+    }
+    
     func getDetailGames() async {
         let network = NetworkService()
         
         do {
             gameFetch = try await network.getGameDetails(gameId: gameId)
+            updateUI()
+            startDownload(gameDetail: gameFetch!)
         } catch {
             fatalError("Error: connection failed.")
+        }
+    }
+    
+    func updateUI() {
+        guard let gameDetail = gameFetch else { return }
+        
+        DispatchQueue.main.async {
+            self.gameTitleLabel.text = gameDetail.name
+            self.gameDescriptionLabel.text = gameDetail.description
+            self.ratingStarsView.rating = Float(gameDetail.rating)
         }
     }
     
@@ -136,7 +170,9 @@ class DetailPopularGameVC: UIViewController {
         NSLayoutConstraint.activate([
             backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImage.widthAnchor.constraint(equalToConstant: 430),
+            backgroundImage.heightAnchor.constraint(equalToConstant: 497)
         ])
     }
     
@@ -214,6 +250,17 @@ class DetailPopularGameVC: UIViewController {
             introductionLabel.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 32),
             introductionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34)
         ])
+    }
+    
+    func configureLoadingIndicator() {
+        view.addSubview(loadingIndicator)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: backgroundImage.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor)
+        ])
+        
     }
 }
 

@@ -82,8 +82,7 @@ extension NetworkService {
                           name: game.name,
                           description: game.description,
                           rating: game.rating,
-                          backgroundImage: game.backgroundImage,
-                          genre: game.genre)
+                          backgroundImage: game.backgroundImage)
     }
     
 }
