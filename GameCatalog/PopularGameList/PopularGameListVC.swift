@@ -37,7 +37,7 @@ class PopularGameListVC: UIViewController {
         
         configureTitleLabel()
         configureTableView()
-        
+
     }
     
     func getGames() async {
@@ -128,7 +128,6 @@ extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.set(game: game)
         
-        // validate ketika gambar belum diunduh pengguna -> show indicator & start to download
         if game.state == .new {
             cell.loadingIndicator.isHidden = false
             cell.loadingIndicator.startAnimating()
@@ -151,22 +150,6 @@ extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
-
-//// TEST DUMMY DATA
-//extension PopularGameListVC {
-//    
-//    func fetchData() -> [Game] {
-//        let game1 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "GTA San Andreas", releaseDate: "1992", rating: "4.5")
-//        let game2 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Legend of Zelda: Breath of the Wild", releaseDate: "2017", rating: "4.9")
-//        let game3 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Red Dead Redemption 2", releaseDate: "2018", rating: "4.8")
-//        let game4 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "The Witcher 3: Wild Hunt", releaseDate: "2015", rating: "4.9")
-//        let game5 = Game(image: UIImage(named: "myPhoto")!, gameTitle: "Minecraft", releaseDate: "2011", rating: "4.7")
-//        
-//        return [game1, game2, game3, game4, game5]
-//    }
-//    
-//}
-
 
 #Preview {
     PopularGameListVC()

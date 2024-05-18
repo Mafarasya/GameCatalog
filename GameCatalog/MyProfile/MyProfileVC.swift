@@ -23,7 +23,6 @@ class MyProfileVC: UIViewController {
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         
-//        label.text = "Mahatmaditya \nFavian RS 🧑🏻‍💻"
         label.textColor = UIColor(named: "nameColor")
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         
@@ -64,7 +63,7 @@ class MyProfileVC: UIViewController {
         view.backgroundColor = UIColor(named: "background")
         
         configureMyProfilePhoto()
-        view.addSubview(imageShadow)
+        configureImageShadow()
         configureNameLabel()
         configureJobLabel()
         configureQuotesLabel()
@@ -78,8 +77,8 @@ class MyProfileVC: UIViewController {
         
         NSLayoutConstraint.activate([
             myProfilePhoto.topAnchor.constraint(equalTo: view.topAnchor),
-            myProfilePhoto.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            myProfilePhoto.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            myProfilePhoto.heightAnchor.constraint(equalToConstant: 524),
+            myProfilePhoto.widthAnchor.constraint(equalToConstant: 430)
         ])
     }
     
@@ -105,19 +104,35 @@ class MyProfileVC: UIViewController {
         ])
     }
     
+    func configureImageShadow() {
+        view.addSubview(imageShadow)
+        
+        imageShadow.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            imageShadow.topAnchor.constraint(equalTo: myProfilePhoto.topAnchor),
+            imageShadow.leadingAnchor.constraint(equalTo: myProfilePhoto.leadingAnchor),
+            imageShadow.trailingAnchor.constraint(equalTo: myProfilePhoto.trailingAnchor),
+            imageShadow.bottomAnchor.constraint(equalTo: myProfilePhoto.bottomAnchor)
+        ])
+    }
+    
     func configureJobLabel() {
         view.addSubview(jobLabel)
 
         jobLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            jobLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 7),
+            jobLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
             jobLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26)
         ])
     }
     
     func configureQuotesLabel() {
         view.addSubview(quotesLabel)
+        
+        let isProMax = UIScreen.main.nativeBounds.height >= 2778
+        let topConstant: CGFloat = isProMax ? 83 : 45
     
         quotesLabel.translatesAutoresizingMaskIntoConstraints = false
         quotesLabel.numberOfLines = 6
@@ -129,9 +144,10 @@ class MyProfileVC: UIViewController {
         quotesLabel.attributedText = NSMutableAttributedString(string: "\"I’m as proud of many of the things we haven’t done as the things we have done. Innovation is saying no to a thousand things.\" \n-Steve Jobs", attributes: [NSAttributedString.Key.kern: 1, NSAttributedString.Key.paragraphStyle: paragraphStyle])
         
         quotesLabel.textAlignment = .center
+
         
         NSLayoutConstraint.activate([
-            quotesLabel.topAnchor.constraint(equalTo: myProfilePhoto.bottomAnchor, constant: 85),
+            quotesLabel.topAnchor.constraint(lessThanOrEqualTo: myProfilePhoto.bottomAnchor, constant: topConstant),
             quotesLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             quotesLabel.widthAnchor.constraint(equalToConstant: 353)
         ])

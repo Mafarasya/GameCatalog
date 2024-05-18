@@ -169,8 +169,6 @@ class DetailPopularGameVC: UIViewController {
         
         NSLayoutConstraint.activate([
             backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backgroundImage.widthAnchor.constraint(equalToConstant: 430),
             backgroundImage.heightAnchor.constraint(equalToConstant: 497)
         ])
@@ -187,7 +185,7 @@ class DetailPopularGameVC: UIViewController {
         
         NSLayoutConstraint.activate([
             gameTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
-            gameTitleLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -73),
+            gameTitleLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -47),
             gameTitleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 220)
         ])
     }
@@ -210,7 +208,7 @@ class DetailPopularGameVC: UIViewController {
         
         NSLayoutConstraint.activate([
             releasedLabel.leadingAnchor.constraint(equalTo: gameTitleLabel.trailingAnchor, constant: 10),
-            releasedLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -73)
+            releasedLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -47)
         ])
     }
     
@@ -222,7 +220,6 @@ class DetailPopularGameVC: UIViewController {
         ratingStarsView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            ratingStarsView.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: 296),
             ratingStarsView.centerYAnchor.constraint(equalTo: gameTitleLabel.centerYAnchor),
             ratingStarsView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -34)
         ])
@@ -264,6 +261,3 @@ class DetailPopularGameVC: UIViewController {
     }
 }
 
-#Preview {
-    DetailPopularGameVC()
-}
