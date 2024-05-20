@@ -14,13 +14,9 @@ class DetailPopularGameVC: UIViewController {
     var game: Game? = nil
     var gameId: Int!
     
-    
     private let scrollView: UIScrollView = {
        var sv = UIScrollView()
         
-//        sv.showsVerticalScrollIndicator = true
-//        sv.isDirectionalLockEnabled = true
-//        sv.showsHorizontalScrollIndicator = false
         sv.translatesAutoresizingMaskIntoConstraints = false
         
         return sv

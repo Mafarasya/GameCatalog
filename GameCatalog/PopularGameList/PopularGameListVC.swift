@@ -6,10 +6,10 @@
 //
 
 import UIKit
-import SwiftUI
+import Toast
 
 class PopularGameListVC: UIViewController {
-
+    
     let tableView = UITableView()
     lazy var titleLabel: UILabel = {
         var label = UILabel()
@@ -32,17 +32,17 @@ class PopularGameListVC: UIViewController {
         
         view.tintColor = .white
         view.backgroundColor = UIColor(named: "background")
-                
+        
         configureTitleLabel()
         configureTableView()
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         Task { await getGames() }
-
+        
     }
     
     
@@ -57,9 +57,10 @@ class PopularGameListVC: UIViewController {
             }
             
         } catch {
-            fatalError("Error: Connection Failed")
+            DispatchQueue.main.async {
+                self.view.makeToast("Connection Error. Please check your internet connection and try again.", duration: 3.0)
+            }
         }
-    
     }
     
     fileprivate func startDownload(game: Game, indexPath: IndexPath) {
@@ -80,14 +81,13 @@ class PopularGameListVC: UIViewController {
                 }
             }
         }
-        
     }
     
     func configureTitleLabel() {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-                
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38)
@@ -100,7 +100,7 @@ class PopularGameListVC: UIViewController {
         tableView.rowHeight = 132
         
         tableView.register(GameCell.self, forCellReuseIdentifier: Cells.gameCell)
-
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.backgroundColor = UIColor(named: "background")
@@ -110,7 +110,7 @@ class PopularGameListVC: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-
+            
         ])
     }
     
@@ -154,8 +154,3 @@ extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
-
-#Preview {
-    PopularGameListVC()
-}
-

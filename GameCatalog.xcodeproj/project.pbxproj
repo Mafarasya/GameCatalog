@@ -23,6 +23,7 @@
 		F9773E3B2BF394390076E3C2 /* DetailPopularGameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3A2BF394390076E3C2 /* DetailPopularGameVC.swift */; };
 		F9773E3D2BF39C840076E3C2 /* StarsRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3C2BF39C840076E3C2 /* StarsRatingView.swift */; };
 		F9773E402BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9773E3F2BF3BC690076E3C2 /* InnerShadowBackgroundImage.swift */; };
+		F9AC91362BFB3E4300172AD4 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F9AC91352BFB3E4300172AD4 /* Toast */; };
 		F9EC9D132BF4EBA500415BE6 /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EC9D122BF4EBA500415BE6 /* GameDetail.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9AC91362BFB3E4300172AD4 /* Toast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +233,9 @@
 			dependencies = (
 			);
 			name = GameCatalog;
+			packageProductDependencies = (
+				F9AC91352BFB3E4300172AD4 /* Toast */,
+			);
 			productName = GameCatalog;
 			productReference = F91AF4CE2BEE7C4200986F39 /* GameCatalog.app */;
 			productType = "com.apple.product-type.application";
@@ -303,6 +308,9 @@
 				Base,
 			);
 			mainGroup = F91AF4C52BEE7C4200986F39;
+			packageReferences = (
+				F9AC91342BFB3E4300172AD4 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+			);
 			productRefGroup = F91AF4CF2BEE7C4200986F39 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -693,6 +701,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F9AC91342BFB3E4300172AD4 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F9AC91352BFB3E4300172AD4 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9AC91342BFB3E4300172AD4 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F91AF4C62BEE7C4200986F39 /* Project object */;
 }
