@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 
 class GameCell: UITableViewCell {
     
@@ -30,7 +29,7 @@ class GameCell: UITableViewCell {
         let iv = UIImageView()
         
         iv.tintColor = .label
-//        iv.image = UIImage(named: "myPhoto")
+        
         return iv
     }()
     
@@ -48,7 +47,7 @@ class GameCell: UITableViewCell {
         
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         label.textColor = UIColor(named: "textColor")
-
+        
         return label
     }()
     
@@ -57,13 +56,13 @@ class GameCell: UITableViewCell {
         
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         label.textColor = UIColor(named: "textColor")
-
+        
         return label
     }()
     
     let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-       
+        
         indicator.color = .gray
         
         return indicator
@@ -81,7 +80,7 @@ class GameCell: UITableViewCell {
         addSubview(ratingLabel)
         addSubview(botSeparatorLine)
         addSubview(loadingIndicator)
-        // Configure the view for the selected state
+        
         configureTopSeparatorLine()
         configureImageView()
         configureGameTitleLabel()
@@ -89,7 +88,7 @@ class GameCell: UITableViewCell {
         configureRatingLabel()
         configureBotSeparatorLine()
         configureLoadingIndicator()
-
+        
     }
     
     required init?(coder: NSCoder) {
@@ -97,13 +96,12 @@ class GameCell: UITableViewCell {
     }
     
     func set(game: Game) {
-//        print("Setting up cell for game: \(game.gameTitle)")
         gameImageView.image = game.image
         gameTitleLabel.text = game.name
-        releaseLabel.text = game.released
-        ratingLabel.text = String(game.rating)
+        releaseLabel.text = "Released: \(game.released)"
+        ratingLabel.text = "Rating: \(game.rating)"
     }
-
+    
     func configureTopSeparatorLine(){
         topSeparatorLine.translatesAutoresizingMaskIntoConstraints = false
         
@@ -184,8 +182,3 @@ class GameCell: UITableViewCell {
     }
     
 }
-
-//#Preview {
-//    GameCell()
-//}
-//

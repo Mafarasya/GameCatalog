@@ -14,18 +14,15 @@ class GameDetail {
     let description: String
     let rating: Float
     let backgroundImage: URL
-//    let genre: [Genre]
     
     var image: UIImage?
 
-    
     init(id: Int, name: String, description: String, rating: Float, backgroundImage: URL) {
         self.id = id
         self.name = name
         self.description = description
         self.rating = rating
         self.backgroundImage = backgroundImage
-//        self.genre = genre
     }
 }
 
@@ -53,21 +50,4 @@ struct GameDetailResponse: Codable {
         self.rating = try container.decode(Float.self, forKey: .rating)
         self.backgroundImage = try container.decode(URL.self, forKey: .backgroundImage)
     }
-}
-
-
-struct Genre: Codable {
-    let id: Int
-    let name: String
-    let slug: String
-    let gamesCount: Int
-    let imageBackground: String
-    
-    enum CodingKeys: String, CodingKey {
-           case id
-           case name
-           case slug
-           case gamesCount = "games_count"
-           case imageBackground = "image_background"
-       }
 }

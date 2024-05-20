@@ -32,21 +32,25 @@ class PopularGameListVC: UIViewController {
         
         view.tintColor = .white
         view.backgroundColor = UIColor(named: "background")
-        
-        Task { await getGames() }
-        
+                
         configureTitleLabel()
         configureTableView()
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        Task { await getGames() }
+
+    }
+    
     
     func getGames() async {
         let network: NetworkService = NetworkService()
         
         do {
             games = try await network.getGames()
-            print(games.count)
-            print("Get games")
             
             DispatchQueue.main.async{
                 self.tableView.reloadData()
@@ -98,6 +102,7 @@ class PopularGameListVC: UIViewController {
         tableView.register(GameCell.self, forCellReuseIdentifier: Cells.gameCell)
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
         tableView.backgroundColor = UIColor(named: "background")
         
         NSLayoutConstraint.activate([
@@ -118,7 +123,6 @@ class PopularGameListVC: UIViewController {
 // MARK: UITableViewDelegate & UITableViewDataSource
 extension PopularGameListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(games.count)
         return games.count
     }
     

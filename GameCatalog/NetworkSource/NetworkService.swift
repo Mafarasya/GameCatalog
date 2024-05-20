@@ -10,7 +10,7 @@ import Foundation
 class NetworkService {
     
     let apiKey = "df576ac0094546218110c4160d779724"
-//    let gameId: Int = 0
+
     func getGames() async throws -> [Game] {
         var components = URLComponents(string: "https://api.rawg.io/api/games")!
         
@@ -53,7 +53,6 @@ class NetworkService {
         let decoder = JSONDecoder()
         let result = try decoder.decode(GameDetailResponse.self, from: data)
         
-//        return GameDetailMapper(input: result.games)
         return gameDetailMapper(input: result)
     }
     

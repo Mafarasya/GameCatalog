@@ -14,12 +14,33 @@ class DetailPopularGameVC: UIViewController {
     var game: Game? = nil
     var gameId: Int!
     
+    
+    private let scrollView: UIScrollView = {
+       var sv = UIScrollView()
+        
+//        sv.showsVerticalScrollIndicator = true
+//        sv.isDirectionalLockEnabled = true
+//        sv.showsHorizontalScrollIndicator = false
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        
+        return sv
+    }()
+    
+    private let containerView: UIView = {
+       var view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     private let imageShadow: UIView = {
         let shadow = InnerShadowView()
         
         shadow.backgroundColor = .clear
-        shadow.frame = CGRect(x: 0, y: 0, width: 430, height: 524)
-        shadow.layer.cornerRadius = 30
+        shadow.frame = CGRect(x: 0, y: 0, width: 430, height: 497)
+//        shadow.layer.cornerRadius = 30
+        shadow.translatesAutoresizingMaskIntoConstraints = false
         
         return shadow
     }()
@@ -29,7 +50,6 @@ class DetailPopularGameVC: UIViewController {
         
         label.textColor = UIColor(named: "textColor")
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-//        label.text = "Grand Theft Auto: San Andreas"
         
         return label
     }()
@@ -46,12 +66,12 @@ class DetailPopularGameVC: UIViewController {
     
     private let backgroundImage: UIImageView = {
         var iv = UIImageView()
-
+        
         return iv
     }()
     
     private let releasedLabel: UILabel = {
-       var label = UILabel()
+        var label = UILabel()
         
         label.textColor = UIColor(named: "textColor")
         label.font = UIFont.systemFont(ofSize: 24)
@@ -76,7 +96,7 @@ class DetailPopularGameVC: UIViewController {
     
     let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-       
+        
         indicator.color = .gray
         
         return indicator
@@ -86,28 +106,20 @@ class DetailPopularGameVC: UIViewController {
         let label = UILabel()
         
         label.textColor = UIColor(named: "textColor")
-//        label.text =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum placerat massa nec pretium. In elementum arcu lectus. Donec eu lacus quam. Phasellus imperdiet tortor non orci tempor, sit amet varius mauris sagittis. Curabitur faucibus, massa eu venenatis fringilla, diam massa fermentum magna, vitae condimentum lectus orci eu turpis. Aliquam tempor enim non elit rhoncus malesuada. Pellentesque posuere semper eros"
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
     }()
     
     let ratingStarsView = StarsRatingView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "background")
-                
-        configureBackgroundImage()
-        view.addSubview(imageShadow)
-        configureGameTitle()
-//        configureReleasedDate()
-        configureGenres()
-        configureRatingStarsView()
-        configureScreenshotsLabel()
-        configureGameDescription()
-
+        
+        configureScrollView()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,20 +174,74 @@ class DetailPopularGameVC: UIViewController {
         }
     }
     
+    func configureScrollView() {
+        view.addSubview(scrollView)
+                
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        configureContainerView()
+        
+    }
+    
+    func configureContainerView() {
+        let scrollFrameGuide = scrollView.frameLayoutGuide
+        scrollView.addSubview(containerView)
+        
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            
+            containerView.leadingAnchor.constraint(equalTo: scrollFrameGuide.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollFrameGuide.trailingAnchor),
+//            containerView.heightAnchor.constraint(equalToConstant: 1500)
+            
+        ])
+        
+        configureBackgroundImage()
+        configureImageShadow()
+        configureGameTitle()
+        configureRatingStarsView()
+        configureIntroductionLabel()
+        configureGameDescription()
+    }
+    
     func configureBackgroundImage() {
-        view.addSubview(backgroundImage)
+        containerView.addSubview(backgroundImage)
         
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImage.widthAnchor.constraint(equalToConstant: 430),
+            backgroundImage.topAnchor.constraint(equalTo: containerView.topAnchor),
+            backgroundImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+//            backgroundImage.widthAnchor.constraint(equalToConstant: 430),
             backgroundImage.heightAnchor.constraint(equalToConstant: 497)
         ])
     }
     
+    func configureImageShadow() {
+        containerView.addSubview(imageShadow)
+        
+        NSLayoutConstraint.activate([
+            imageShadow.topAnchor.constraint(equalTo: backgroundImage.topAnchor),
+            imageShadow.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor),
+            imageShadow.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor),
+            imageShadow.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor)
+        ])
+        
+    }
+    
     func configureGameTitle() {
-        view.addSubview(gameTitleLabel)
+        containerView.addSubview(gameTitleLabel)
         
         gameTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -184,25 +250,25 @@ class DetailPopularGameVC: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            gameTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
+            gameTitleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34),
             gameTitleLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -47),
             gameTitleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 220)
         ])
     }
     
     func configureGenres() {
-        view.addSubview(genresLabel)
+        containerView.addSubview(genresLabel)
         
         genresLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             genresLabel.topAnchor.constraint(equalTo: gameTitleLabel.bottomAnchor, constant: 6),
-            genresLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34)
+            genresLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34)
         ])
     }
     
     func configureReleasedDate() {
-        view.addSubview(releasedLabel)
+        containerView.addSubview(releasedLabel)
         
         releasedLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -213,7 +279,7 @@ class DetailPopularGameVC: UIViewController {
     }
     
     func configureRatingStarsView() {
-        view.addSubview(ratingStarsView)
+        containerView.addSubview(ratingStarsView)
         
         ratingStarsView.rating = 3.5
         
@@ -221,43 +287,34 @@ class DetailPopularGameVC: UIViewController {
         
         NSLayoutConstraint.activate([
             ratingStarsView.centerYAnchor.constraint(equalTo: gameTitleLabel.centerYAnchor),
-            ratingStarsView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -34)
+            ratingStarsView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -34)
         ])
     }
     
     func configureGameDescription() {
-        view.addSubview(gameDescriptionLabel)
+        containerView.addSubview(gameDescriptionLabel)
         
         gameDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         gameDescriptionLabel.numberOfLines = 0
         
         NSLayoutConstraint.activate([
             gameDescriptionLabel.topAnchor.constraint(equalTo: introductionLabel.bottomAnchor, constant: 10),
-            gameDescriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34),
-            gameDescriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34)
+            gameDescriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34),
+            gameDescriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -34),
+            gameDescriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30)
         ])
     }
     
-    func configureScreenshotsLabel() {
-        view.addSubview(introductionLabel)
+    func configureIntroductionLabel() {
+        containerView.addSubview(introductionLabel)
         
         introductionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             introductionLabel.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 32),
-            introductionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 34)
+            introductionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34)
         ])
     }
     
-    func configureLoadingIndicator() {
-        view.addSubview(loadingIndicator)
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            loadingIndicator.centerXAnchor.constraint(equalTo: backgroundImage.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor)
-        ])
-        
-    }
 }
 
