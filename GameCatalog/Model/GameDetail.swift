@@ -14,15 +14,17 @@ class GameDetail {
     let description: String
     let rating: Float
     let backgroundImage: URL
+    let released: String
     
     var image: UIImage?
 
-    init(id: Int, name: String, description: String, rating: Float, backgroundImage: URL) {
+    init(id: Int, name: String, description: String, rating: Float, backgroundImage: URL, released: String) {
         self.id = id
         self.name = name
         self.description = description
         self.rating = rating
         self.backgroundImage = backgroundImage
+        self.released = released
     }
 }
 
@@ -32,6 +34,7 @@ struct GameDetailResponse: Codable {
     let description: String
     let rating: Float
     let backgroundImage: URL
+    let released: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -39,10 +42,16 @@ struct GameDetailResponse: Codable {
         case description = "description_raw"
         case rating
         case backgroundImage = "background_image"
+        case released
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let dateString = try container.decode(String.self, forKey: .released)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-DD"
+        released = dateFormatter.date(from: dateString)!
         
         self.id = try container.decode(Int.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)

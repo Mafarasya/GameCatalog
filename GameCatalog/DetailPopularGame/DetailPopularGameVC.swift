@@ -13,6 +13,7 @@ class DetailPopularGameVC: UIViewController {
     var gameFetch: GameDetail? = nil
     var game: Game? = nil
     var gameId: Int!
+    var gameReleased: String!
     
     private let scrollView: UIScrollView = {
        var sv = UIScrollView()
@@ -35,7 +36,6 @@ class DetailPopularGameVC: UIViewController {
         
         shadow.backgroundColor = .clear
         shadow.frame = CGRect(x: 0, y: 0, width: 430, height: 497)
-//        shadow.layer.cornerRadius = 30
         shadow.translatesAutoresizingMaskIntoConstraints = false
         
         return shadow
@@ -66,30 +66,6 @@ class DetailPopularGameVC: UIViewController {
         return iv
     }()
     
-    private let releasedLabel: UILabel = {
-        var label = UILabel()
-        
-        label.textColor = UIColor(named: "textColor")
-        label.font = UIFont.systemFont(ofSize: 24)
-        
-        return label
-    }()
-    
-    private let genresLabel: UILabel = {
-        var label = UILabel()
-        
-        label.textColor = UIColor(named: "textColor")
-        label.font = UIFont.systemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    private let gameScreenshots: UIImageView = {
-        let iv = UIImageView()
-        
-        return iv
-    }()
-    
     let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         
@@ -103,6 +79,15 @@ class DetailPopularGameVC: UIViewController {
         
         label.textColor = UIColor(named: "textColor")
         label.font = UIFont.systemFont(ofSize: 15)
+        
+        return label
+    }()
+    
+    private let gameReleasedLabel: UILabel = {
+       let label = UILabel()
+        
+        label.textColor = UIColor(named: "textColor")
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
         return label
     }()
@@ -128,6 +113,8 @@ class DetailPopularGameVC: UIViewController {
         gameTitleLabel.text = game.name
         gameDescriptionLabel.text = game.description
         ratingStarsView.rating = Float(game.rating)
+        gameReleasedLabel.text = game.released
+        
     }
     
     fileprivate func startDownload(gameDetail: GameDetail) {
@@ -167,6 +154,7 @@ class DetailPopularGameVC: UIViewController {
             self.gameTitleLabel.text = gameDetail.name
             self.gameDescriptionLabel.text = gameDetail.description
             self.ratingStarsView.rating = Float(gameDetail.rating)
+            self.gameReleasedLabel.text = gameDetail.released
         }
     }
     
@@ -195,16 +183,14 @@ class DetailPopularGameVC: UIViewController {
             containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            
             containerView.leadingAnchor.constraint(equalTo: scrollFrameGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: scrollFrameGuide.trailingAnchor),
-//            containerView.heightAnchor.constraint(equalToConstant: 1500)
-            
         ])
         
         configureBackgroundImage()
         configureImageShadow()
         configureGameTitle()
+        configureGameReleasedDate()
         configureRatingStarsView()
         configureIntroductionLabel()
         configureGameDescription()
@@ -219,7 +205,6 @@ class DetailPopularGameVC: UIViewController {
             backgroundImage.topAnchor.constraint(equalTo: containerView.topAnchor),
             backgroundImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             backgroundImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-//            backgroundImage.widthAnchor.constraint(equalToConstant: 430),
             backgroundImage.heightAnchor.constraint(equalToConstant: 497)
         ])
     }
@@ -252,28 +237,6 @@ class DetailPopularGameVC: UIViewController {
         ])
     }
     
-    func configureGenres() {
-        containerView.addSubview(genresLabel)
-        
-        genresLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            genresLabel.topAnchor.constraint(equalTo: gameTitleLabel.bottomAnchor, constant: 6),
-            genresLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34)
-        ])
-    }
-    
-    func configureReleasedDate() {
-        containerView.addSubview(releasedLabel)
-        
-        releasedLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            releasedLabel.leadingAnchor.constraint(equalTo: gameTitleLabel.trailingAnchor, constant: 10),
-            releasedLabel.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -47)
-        ])
-    }
-    
     func configureRatingStarsView() {
         containerView.addSubview(ratingStarsView)
         
@@ -284,6 +247,17 @@ class DetailPopularGameVC: UIViewController {
         NSLayoutConstraint.activate([
             ratingStarsView.centerYAnchor.constraint(equalTo: gameTitleLabel.centerYAnchor),
             ratingStarsView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -34)
+        ])
+    }
+    
+    func configureGameReleasedDate() {
+        containerView.addSubview(gameReleasedLabel)
+        
+        gameReleasedLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            gameReleasedLabel.topAnchor.constraint(equalTo: gameTitleLabel.bottomAnchor, constant: 8),
+            gameReleasedLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34),
         ])
     }
     

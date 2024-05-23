@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Toast
 
 class NetworkService {
     
@@ -77,11 +78,16 @@ extension NetworkService {
     
     fileprivate func gameDetailMapper(input gameDetailResponse: GameDetailResponse) -> GameDetail {
         let game = gameDetailResponse
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-DD"
+        
+        let releasedDateString = dateFormatter.string(from: game.released)
+        
         return GameDetail(id: game.id,
                           name: game.name,
                           description: game.description,
                           rating: game.rating,
-                          backgroundImage: game.backgroundImage)
+                          backgroundImage: game.backgroundImage,
+                          released: releasedDateString)
     }
-    
 }
