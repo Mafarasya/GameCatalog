@@ -100,12 +100,10 @@ class DetailPopularGameVC: UIViewController {
         view.backgroundColor = UIColor(named: "background")
         
         configureScrollView()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         Task { await getDetailGames()}
     }
     
@@ -114,23 +112,27 @@ class DetailPopularGameVC: UIViewController {
         gameDescriptionLabel.text = game.description
         ratingStarsView.rating = Float(game.rating)
         gameReleasedLabel.text = game.released
-        
     }
     
     fileprivate func startDownload(gameDetail: GameDetail) {
         let downloader: ImageDownloader = ImageDownloader()
         
-        Task {
-            do {
-                let image = try await downloader.downloadImage(url: gameDetail.backgroundImage)
-                
-                gameDetail.image = image
-                DispatchQueue.main.async {
-                    self.backgroundImage.image = gameDetail.image
+        if gameDetail.state == .new {
+            Task {
+                do {
+                    let image = try await downloader.downloadImage(url: gameDetail.backgroundImage)
+                    gameDetail.state = .downloaded
+                    gameDetail.image = image
+                    print(gameDetail.state)
+                    DispatchQueue.main.async {
+                        self.backgroundImage.image = gameDetail.image
+                        self.loadingIndicator.stopAnimating()
+                        self.loadingIndicator.isHidden = true
+                    }
+                } catch {
+                    gameDetail.state = .failed
+                    gameDetail.image = nil
                 }
-                
-            } catch {
-                gameDetail.image = nil
             }
         }
     }
@@ -141,7 +143,6 @@ class DetailPopularGameVC: UIViewController {
         do {
             gameFetch = try await network.getGameDetails(gameId: gameId)
             updateUI()
-            startDownload(gameDetail: gameFetch!)
         } catch {
             fatalError("Error: connection failed.")
         }
@@ -149,13 +150,15 @@ class DetailPopularGameVC: UIViewController {
     
     func updateUI() {
         guard let gameDetail = gameFetch else { return }
-        
-        DispatchQueue.main.async {
-            self.gameTitleLabel.text = gameDetail.name
-            self.gameDescriptionLabel.text = gameDetail.description
-            self.ratingStarsView.rating = Float(gameDetail.rating)
-            self.gameReleasedLabel.text = gameDetail.released
+    
+        if gameDetail.state == .new {
+            loadingIndicator.isHidden = false
+            loadingIndicator.startAnimating()
+            startDownload(gameDetail: gameDetail)
         }
+        
+        set(game: gameDetail)
+
     }
     
     func configureScrollView() {
@@ -188,6 +191,7 @@ class DetailPopularGameVC: UIViewController {
         ])
         
         configureBackgroundImage()
+        configureLoadingIndicator()
         configureImageShadow()
         configureGameTitle()
         configureGameReleasedDate()
@@ -240,7 +244,7 @@ class DetailPopularGameVC: UIViewController {
     func configureRatingStarsView() {
         containerView.addSubview(ratingStarsView)
         
-        ratingStarsView.rating = 3.5
+        ratingStarsView.rating = 0.0
         
         ratingStarsView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -283,6 +287,17 @@ class DetailPopularGameVC: UIViewController {
         NSLayoutConstraint.activate([
             introductionLabel.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 32),
             introductionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 34)
+        ])
+    }
+    
+    func configureLoadingIndicator() {
+        containerView.addSubview(loadingIndicator)
+        
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: backgroundImage.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor)
         ])
     }
     

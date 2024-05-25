@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+
+
 class GameDetail {
     let id: Int
     let name: String
@@ -17,7 +19,8 @@ class GameDetail {
     let released: String
     
     var image: UIImage?
-
+    var state: DownloadState = .new
+    
     init(id: Int, name: String, description: String, rating: Float, backgroundImage: URL, released: String) {
         self.id = id
         self.name = name

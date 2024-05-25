@@ -38,8 +38,8 @@ class PopularGameListVC: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         Task { await getGames() }
         
@@ -52,7 +52,7 @@ class PopularGameListVC: UIViewController {
         do {
             games = try await network.getGames()
             
-            DispatchQueue.main.async{
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
             
