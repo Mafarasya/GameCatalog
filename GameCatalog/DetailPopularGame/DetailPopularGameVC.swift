@@ -111,7 +111,7 @@ class DetailPopularGameVC: UIViewController {
         gameTitleLabel.text = game.name
         gameDescriptionLabel.text = game.description
         ratingStarsView.rating = Float(game.rating)
-        gameReleasedLabel.text = game.released
+        gameReleasedLabel.text = "Released: \(game.released)"
     }
     
     fileprivate func startDownload(gameDetail: GameDetail) {
